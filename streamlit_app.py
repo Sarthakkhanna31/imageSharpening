@@ -17,9 +17,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS for better styling (responsive to light/dark mode)
 st.markdown("""
 <style>
+    /* Main header - works in both themes */
     .main-header {
         text-align: center;
         padding: 2rem 0;
@@ -27,58 +28,121 @@ st.markdown("""
         color: white;
         border-radius: 10px;
         margin-bottom: 2rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
     
+    /* Feature cards - using CSS media queries for better theme detection */
     .feature-card {
-        background: white;
         padding: 1.5rem;
         border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin: 1rem 0;
         border-left: 4px solid #667eea;
+        border: 1px solid rgba(128, 128, 128, 0.3);
+        backdrop-filter: blur(10px);
     }
     
-    .stats-container {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    /* Light mode */
+    @media (prefers-color-scheme: light) {
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333333;
+        }
+        
+        .upload-section {
+            background: rgba(248, 249, 250, 0.9);
+            color: #333333;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+    }
+    
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+        .feature-card {
+            background: rgba(38, 39, 48, 0.9);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats-container {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: #ffffff;
+        }
+        
+        .upload-section {
+            background: rgba(30, 30, 30, 0.9);
+            color: #ffffff;
+        }
+        
+        .success-message {
+            background: #1b4332;
+            color: #a7f3d0;
+            border-color: #2d5a3d;
+        }
+    }
+    
+    /* Fallback for Streamlit's theme classes */
+    .stApp[data-theme="dark"] .feature-card {
+        background: rgba(38, 39, 48, 0.9) !important;
+        color: #ffffff !important;
+    }
+    
+    .stApp[data-theme="dark"] .stats-container {
+        background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%) !important;
+        color: #ffffff !important;
+    }
+    
+    .stApp[data-theme="dark"] .upload-section {
+        background: rgba(30, 30, 30, 0.9) !important;
+        color: #ffffff !important;
+    }
+    
+    .stApp[data-theme="dark"] .success-message {
+        background: #1b4332 !important;
+        color: #a7f3d0 !important;
+        border-color: #2d5a3d !important;
+    }
+    
+    /* Common styles */
+    .stats-container, .upload-section, .success-message {
         padding: 1rem;
         border-radius: 10px;
         margin: 1rem 0;
     }
     
     .upload-section {
-        background: #f8f9fa;
         padding: 2rem;
-        border-radius: 10px;
         border: 2px dashed #667eea;
         text-align: center;
-        margin: 1rem 0;
-    }
-    
-    .result-container {
-        background: white;
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        margin: 1rem 0;
-    }
-    
-    .processing-animation {
-        text-align: center;
-        padding: 2rem;
     }
     
     .success-message {
-        background: #d4edda;
-        color: #155724;
-        padding: 1rem;
-        border-radius: 5px;
-        border: 1px solid #c3e6cb;
-        margin: 1rem 0;
+        border: 1px solid;
     }
     
+    /* Progress bar styling */
     .stProgress > div > div > div > div {
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    /* Ensure text contrast */
+    .feature-card h4, .stats-container h4 {
+        margin-top: 0;
+        opacity: 1;
+    }
+    
+    .feature-card p, .feature-card li, .stats-container p {
+        opacity: 0.9;
     }
 </style>
 """, unsafe_allow_html=True)
